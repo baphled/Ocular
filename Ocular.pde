@@ -41,7 +41,7 @@ String stringIn = "";// for incoming serial data
 int previous = 0;
 int pos = 0;
 
-LiquidCrystal lcd(9,8, 5, 4, 3, 2);
+LiquidCrystal lcd(9,8, 6, 5, 3, 2);
 
 void setup() {
 	Serial.begin(9600);     // opens serial port, sets data rate to 9600 bps
