@@ -79,7 +79,7 @@ void loop() {
 			}
 		}
 		if(stringIn == "2") {
-			String path = "/commits";
+			String path = "/commits.txt";
 			lcd.print("Commits");
 			connect(path);
 			String message = getResponseBody();
