@@ -63,7 +63,6 @@ void setup() {
 void loop() {
 	if (Serial.available() > 0) {
 		lcd.clear();
-		lcd.setCursor(0, 1);
 		String stringIn = Serial.readString();
 		Serial.println("connecting...");
 		client.connect(server, 9000);
@@ -165,6 +164,8 @@ void displayHelp() {
 
 */
 void connect(String path) {
+	lcd.setCursor(0, 1);
+	lcd.println("Gathering data...");
 	if (client.connected()) {
 		Serial.println("connected");
 		client.println("GET " + path + " HTTP/1.1");
