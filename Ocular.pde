@@ -70,32 +70,29 @@ void loop() {
 		delay(1000);
 		if(stringIn == "1") {
 			String path = "/deploys";
-			lcd.print("Deploys screen");
 			connect(path);
 			String message = getResponseBody();
 			Serial.println(message);
 			while(Serial.available() == 0) {
-				printErrors(1, message);
+				printErrors(1, message, "Deploys");
 			}
 		}
 		if(stringIn == "2") {
 			String path = "/commits.txt";
-			lcd.print("Commits");
 			connect(path);
 			String message = getResponseBody();
 			Serial.println(message);
 			while(Serial.available() == 0) {
-				printErrors(1, message);
+				printErrors(1, message, "Commits");
 			}
 		}
 		if(stringIn == "3") {
 			String path = "/errors";
-			lcd.print("Errors");
 			connect(path);
 			String message = getResponseBody();
 			Serial.println(message);
 			while(Serial.available() == 0) {
-				printErrors(1, message);
+				printErrors(1, message, "Errors");
 			}
 		}
 		if(stringIn == "4") {
@@ -108,7 +105,7 @@ void loop() {
 	}
 }
 
-void printErrors(int refreshSeconds, String message){
+void printErrors(int refreshSeconds, String message, char *heading){
 	//Check if the current second since restart is a mod of refresh seconds , 
 	//if it is then update the display , it must also not equal the previously 
 	//stored value to prevent duplicate refreshes
@@ -131,6 +128,8 @@ void printErrors(int refreshSeconds, String message){
 		//Build the lcd text by copying the required text out of our template message variable 
 		memcpy(&lcdTop[0],&message[tempPos],copySize);
 		lcd.print(lcdTop);//Print it from position 0
+		lcd.setCursor(0, 0);
+		lcd.print(heading);
 		//Increase the current position and check if the position + 16 (screen size) would be larger than the message length , if it is go in reverse by inverting the sign.
 		pos += 1;
 		if(pos +20 >= message.length())
