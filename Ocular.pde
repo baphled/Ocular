@@ -72,7 +72,6 @@ void loop() {
 			String path = "/deploys";
 			lcd.print("Deploys screen");
 			connect(path);
-			delay(2000);
 			String message = getResponseBody();
 			Serial.println(message);
 			while(Serial.available() == 0) {
@@ -83,7 +82,6 @@ void loop() {
 			String path = "/commits";
 			lcd.print("Commits");
 			connect(path);
-			delay(2000);
 			String message = getResponseBody();
 			Serial.println(message);
 			while(Serial.available() == 0) {
@@ -94,7 +92,6 @@ void loop() {
 			String path = "/errors";
 			lcd.print("Errors");
 			connect(path);
-			delay(2000);
 			String message = getResponseBody();
 			Serial.println(message);
 			while(Serial.available() == 0) {
@@ -177,17 +174,20 @@ void connect(String path) {
 	else {
 		Serial.println("connection failed");
 	}
+	delay(3000);
 }
 
 String getResponseBody() {
 	String message;
+	String c;
 
 	while (client.available()) {
 		TextFinder finder(client);
 		finder.findUntil("value", "\n\r");
 		String c = client.readString();
 		c.trim();
-		message = c;
+		message.concat(c);
+		Serial.println(message);
 	}
 	client.stop();
 
