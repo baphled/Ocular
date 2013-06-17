@@ -66,7 +66,7 @@ void loop() {
 		client.connect(server, 9000);
 		delay(1000);
 		if(stringIn == "1") {
-			String path = "/deploys";
+			String path = "/deploys.txt";
 			connect(path);
 			String message = getResponseBody();
 			lcd.clear();
