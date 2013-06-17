@@ -56,7 +56,6 @@ void setup() {
 		Ethernet.begin(mac, ip, dns_server, gateway);
 	}
 	Serial.println(Ethernet.localIP());
-	// give the Ethernet shield a second to initialize:
 	displayHelp();
 }
 
@@ -64,14 +63,13 @@ void loop() {
 	if (Serial.available() > 0) {
 		lcd.clear();
 		String stringIn = Serial.readString();
-		Serial.println("connecting...");
 		client.connect(server, 9000);
 		delay(1000);
 		if(stringIn == "1") {
 			String path = "/deploys";
 			connect(path);
 			String message = getResponseBody();
-			Serial.println(message);
+			lcd.clear();
 			while(Serial.available() == 0) {
 				printErrors(1, message, "Deploys");
 			}
@@ -80,7 +78,7 @@ void loop() {
 			String path = "/commits.txt";
 			connect(path);
 			String message = getResponseBody();
-			Serial.println(message);
+			lcd.clear();
 			while(Serial.available() == 0) {
 				printErrors(1, message, "Commits");
 			}
@@ -89,12 +87,13 @@ void loop() {
 			String path = "/errors";
 			connect(path);
 			String message = getResponseBody();
-			Serial.println(message);
+			lcd.clear();
 			while(Serial.available() == 0) {
 				printErrors(1, message, "Errors");
 			}
 		}
 		if(stringIn == "4") {
+			lcd.clear();
 			lcd.setCursor(0, 1);
 			lcd.print("Set server:");
 		}
@@ -187,7 +186,6 @@ String getResponseBody() {
 		String c = client.readString();
 		c.trim();
 		message.concat(c);
-		Serial.println(message);
 	}
 	client.stop();
 
