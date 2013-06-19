@@ -25,6 +25,11 @@ IPAddress dns_server(192, 168, 0, 1);
 IPAddress ip(192,168,0,177);
 IPAddress gateway( 192, 168, 0, 1 );
 byte server[] = { 192, 168, 0, 23 }; // API IP address
+/*IPAddress dns_server(172, 25, 92, 6);*/
+/*IPAddress ip(172, 25, 94, 22);*/
+/*IPAddress gateway( 172, 25, 92, 4 );*/
+/*byte server[] = { 172, 25, 9, 177 }; // API IP address*/
+
 
 // Initialize the Ethernet client library
 // with the IP address and port of the server 
@@ -47,15 +52,25 @@ void setup() {
 	Serial.begin(9600);     // opens serial port, sets data rate to 9600 bps
 	lcd.begin(20, 4);
 	// TODO: Add ascii art
-	lcd.print("LCDevops");
+	lcd.print("       Ocular      ");
 	// start the Ethernet connection:
+	lcd.setCursor(0, 2);
+	lcd.print(" Establishing IP...");
 	if (Ethernet.begin(mac) == 0) {
-		Serial.println("Failed to configure Ethernet using DHCP");
+		lcd.setCursor(0, 3);
+		lcd.print("Failed using DHCP");
+		delay(2000);
 		// no point in carrying on, so do nothing forevermore:
 		// try to congifure using IP address instead of DHCP:
 		Ethernet.begin(mac, ip, dns_server, gateway);
+		// TODO Actually check that we have an IP address
 	}
-	Serial.println(Ethernet.localIP());
+	String IP = "IP: ";
+	lcd.clear();
+	lcd.setCursor(0, 2);
+	lcd.print("IP: ");
+	lcd.print(Ethernet.localIP());
+	delay(5000);
 	displayHelp();
 }
 
@@ -63,7 +78,6 @@ void loop() {
 	if (Serial.available() > 0) {
 		lcd.clear();
 		String stringIn = Serial.readString();
-		client.connect(server, 9000);
 		delay(1000);
 		if(stringIn == "1") {
 			String path = "/deploys.txt";
@@ -163,8 +177,9 @@ void displayHelp() {
 
 */
 void connect(String path) {
+	client.connect(server, 9000);
 	lcd.setCursor(0, 1);
-	lcd.println("Gathering data...");
+	lcd.print("Gathering data...");
 	if (client.connected()) {
 		Serial.println("connected");
 		client.println("GET " + path + " HTTP/1.1");
@@ -176,6 +191,17 @@ void connect(String path) {
 	delay(3000);
 }
 
+/*
+
+	Get the response's body
+
+	This assumes that the request was successful which is obviously not always the case for various reasons.
+
+	We need to improve on this functionality so that we only get the response
+	body when we have made a successful request.
+
+*/
+
 String getResponseBody() {
 	String message;
 	String c;
@@ -185,6 +211,8 @@ String getResponseBody() {
 		finder.findUntil("value", "\n\r");
 		String c = client.readString();
 		c.trim();
+		Serial.println(c);
+		Serial.println("More content?");
 		message.concat(c);
 	}
 	client.stop();
