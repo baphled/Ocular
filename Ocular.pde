@@ -176,19 +176,21 @@ void displayHelp() {
 
 */
 void connect(String path) {
-	client.connect(server, 9000);
 	clearScreen();
-	lcd.setCursor(0, 2);
-	lcd.print(" Gathering data ...");
+	client.connect(server, 9000);
 	if (client.connected()) {
-		Serial.println("connected");
+		lcd.setCursor(0, 1);
+		lcd.print("     Connected     ");
+		lcd.setCursor(0, 2);
+		lcd.print(" Gathering data ...");
+
 		client.println("GET " + path + " HTTP/1.1");
 		client.println();
 	} 
 	else {
-		Serial.println("connection failed");
+		lcd.println("Connection error!");
 	}
-	delay(3000);
+	delay(1000);
 }
 
 /*
