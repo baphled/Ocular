@@ -46,57 +46,70 @@ void setup() {
 	// TODO: Add ascii art
 	lcd.print("       Ocular      ");
 	// start the Ethernet connection:
-	lcd.setCursor(0, 2);
-	lcd.print(" Establishing IP...");
+	lcd.setCursor(0, 1);
+	lcd.print("   Connecting ...  ");
+	lcd.setCursor(0, 1);
 	if (Ethernet.begin(mac) == 0) {
-		lcd.setCursor(0, 3);
-		lcd.print("Failed using DHCP");
+		lcd.print(" Connection failed ");
+	} else {
+
+		lcd.print("     Connected     ");
 	}
-	String IP = "IP: ";
-	lcd.clear();
 	lcd.setCursor(0, 2);
+	lcd.setCursor(2, 3);
 	lcd.print("IP: ");
 	lcd.print(Ethernet.localIP());
 	delay(5000);
 	displayHelp();
 }
 
+void clearScreen() {
+	lcd.setCursor(0, 1);
+	lcd.print("                    ");
+	lcd.setCursor(0, 2);
+	lcd.print("                    ");
+	lcd.setCursor(0, 3);
+	lcd.print("                    ");
+}
+
 void loop() {
 	if (Serial.available() > 0) {
-		lcd.clear();
 		String stringIn = Serial.readString();
 		delay(1000);
 		if(stringIn == "1") {
 			String path = "/deploys.txt";
 			connect(path);
 			String message = getResponseBody();
-			lcd.clear();
+			clearScreen();
 			while(Serial.available() == 0) {
-				printErrors(1, message, "Deploys");
+				printErrors(1, message, "    Last Deploys    ");
 			}
 		}
 		if(stringIn == "2") {
 			String path = "/commits.txt";
 			connect(path);
 			String message = getResponseBody();
-			lcd.clear();
+			clearScreen();
 			while(Serial.available() == 0) {
-				printErrors(1, message, "Commits");
+				printErrors(1, message, "      Commits       ");
 			}
 		}
 		if(stringIn == "3") {
 			String path = "/errors";
 			connect(path);
 			String message = getResponseBody();
-			lcd.clear();
+			clearScreen();
 			while(Serial.available() == 0) {
-				printErrors(1, message, "Errors");
+				printErrors(1, message, "       Errors       ");
 			}
 		}
 		if(stringIn == "4") {
-			lcd.clear();
+			clearScreen();
 			lcd.setCursor(0, 1);
-			lcd.print("Set server:");
+			lcd.print("      Settings     ");
+			lcd.setCursor(0, 3);
+			lcd.print("API:");
+			// TODO: Create IP input functionality via a 4x4 keypad
 		}
 		if (stringIn == "0") {
 			displayHelp();
@@ -128,6 +141,8 @@ void printErrors(int refreshSeconds, String message, char *heading){
 		memcpy(&lcdTop[0],&message[tempPos],copySize);
 		lcd.print(lcdTop);//Print it from position 0
 		lcd.setCursor(0, 0);
+		lcd.print("       Ocular      ");
+		lcd.setCursor(0, 1);
 		lcd.print(heading);
 		//Increase the current position and check if the position + 16 (screen size) would be larger than the message length , if it is go in reverse by inverting the sign.
 		pos += 1;
@@ -143,16 +158,16 @@ void printErrors(int refreshSeconds, String message, char *heading){
 
  */
 void displayHelp() {
-	lcd.clear();
-	lcd.setCursor(0, 0);
-	lcd.print("#1 Deploys");
-	lcd.setCursor(10, 0);
-	lcd.print("#2 Commits");
+	clearScreen();
 	lcd.setCursor(0, 1);
-	lcd.print("#3 Errors");
+	lcd.print("#1 Deploys");
 	lcd.setCursor(10, 1);
-	lcd.print("#4 Config");
+	lcd.print("#2 Commits");
 	lcd.setCursor(0, 2);
+	lcd.print("#3 Errors");
+	lcd.setCursor(10, 2);
+	lcd.print("#4 Config");
+	lcd.setCursor(0, 3);
 	lcd.print("#0 Help");
 }
 
@@ -165,8 +180,9 @@ void displayHelp() {
 */
 void connect(String path) {
 	client.connect(server, 9000);
-	lcd.setCursor(0, 1);
-	lcd.print("Gathering data...");
+	clearScreen();
+	lcd.setCursor(0, 2);
+	lcd.print(" Gathering data ...");
 	if (client.connected()) {
 		Serial.println("connected");
 		client.println("GET " + path + " HTTP/1.1");
