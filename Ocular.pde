@@ -21,15 +21,7 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 // Enter a MAC address for your controller below.
 // TODO: Make these configurable
 // TODO: Should be able to choose to use DHCP or manually configure IP settings
-IPAddress dns_server(192, 168, 0, 1);
-IPAddress ip(192,168,0,177);
-IPAddress gateway( 192, 168, 0, 1 );
 byte server[] = { 192, 168, 0, 23 }; // API IP address
-/*IPAddress dns_server(172, 25, 92, 6);*/
-/*IPAddress ip(172, 25, 94, 22);*/
-/*IPAddress gateway( 172, 25, 92, 4 );*/
-/*byte server[] = { 172, 25, 9, 177 }; // API IP address*/
-
 
 // Initialize the Ethernet client library
 // with the IP address and port of the server 
@@ -59,11 +51,6 @@ void setup() {
 	if (Ethernet.begin(mac) == 0) {
 		lcd.setCursor(0, 3);
 		lcd.print("Failed using DHCP");
-		delay(2000);
-		// no point in carrying on, so do nothing forevermore:
-		// try to congifure using IP address instead of DHCP:
-		Ethernet.begin(mac, ip, dns_server, gateway);
-		// TODO Actually check that we have an IP address
 	}
 	String IP = "IP: ";
 	lcd.clear();
