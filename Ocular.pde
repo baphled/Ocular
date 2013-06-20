@@ -77,8 +77,7 @@ void loop() {
 		String stringIn = Serial.readString();
 		delay(1000);
 		if(stringIn == "1") {
-			String path = "/deploys.txt";
-			connect(path);
+			connect("/deploys.txt");
 			String message = getResponseBody();
 			clearScreen();
 			while(Serial.available() == 0) {
@@ -86,8 +85,7 @@ void loop() {
 			}
 		}
 		if(stringIn == "2") {
-			String path = "/commits.txt";
-			connect(path);
+			connect("/commits.txt");
 			String message = getResponseBody();
 			clearScreen();
 			while(Serial.available() == 0) {
@@ -95,8 +93,7 @@ void loop() {
 			}
 		}
 		if(stringIn == "3") {
-			String path = "/errors";
-			connect(path);
+			connect("/errors");
 			String message = getResponseBody();
 			clearScreen();
 			while(Serial.available() == 0) {
