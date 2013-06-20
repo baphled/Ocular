@@ -38,6 +38,8 @@ String stringIn = "";// for incoming serial data
 int previous = 0;
 int pos = 0;
 
+String message;
+
 LiquidCrystal lcd(9,8, 6, 5, 3, 2);
 
 void setup() {
@@ -85,39 +87,15 @@ void loop() {
 		delay(1000);
 		if(stringIn == "1") {
 			connect("/deploys.txt");
-			String message = getResponseBody();
-			clearScreen();
-			if (message.length() > 0) {
-				while(Serial.available() == 0) {
-					printErrors(1, message, "    Last Deploys    ");
-				}
-			} else {
-				displayError();
-			}
+			handleResponse( "    Last Deploys    ");
 		}
 		if(stringIn == "2") {
 			connect("/commits.txt");
-			String message = getResponseBody();
-			clearScreen();
-			if (message.length() > 0) {
-				while(Serial.available() == 0) {
-					printErrors(1, message, "      Commits       ");
-				}
-			} else {
-				displayError();
-			}
+			handleResponse("      Commits       ");
 		}
 		if(stringIn == "3") {
 			connect("/errors");
-			String message = getResponseBody();
-			clearScreen();
-			if (message.length() > 0) {
-				while(Serial.available() == 0) {
-					printErrors(1, message, "       Errors       ");
-				}
-			} else {
-				displayError();
-			}
+			handleResponse("       Errors       ");
 		}
 		if(stringIn == "4") {
 			clearScreen();
@@ -223,20 +201,26 @@ void connect(String path) {
 
 */
 
-String getResponseBody() {
-	String message;
-	String c;
+void handleResponse(char* caption) {
 
-	while (client.available()) {
+	if (client.available()) {
 		TextFinder finder(client);
 		finder.findUntil("value", "\n\r");
-		String c = client.readString();
-		c.trim();
-		Serial.println(c);
-		Serial.println("More content?");
-		message.concat(c);
+		// FIXME This won't work if the response is too bigger.
+		message = client.readString();
+		if (!message.length()) {
+			Serial.println("Problem getting full response");
+		} else {
+			Serial.println(message);
+		}
+	}
+	clearScreen();
+	if (message.length() > 0) {
+		while(Serial.available() == 0) {
+			printErrors(1, message, caption);
+		}
+	} else {
+		displayError();
 	}
 	client.stop();
-
-	return message;
 }
