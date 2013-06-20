@@ -72,6 +72,13 @@ void clearScreen() {
 	lcd.print("                    ");
 }
 
+void displayError() {
+	lcd.setCursor(0, 2);
+	lcd.print(" Error in response ");
+	delay(2000);
+	displayHelp();
+}
+
 void loop() {
 	if (Serial.available() > 0) {
 		String stringIn = Serial.readString();
@@ -80,24 +87,36 @@ void loop() {
 			connect("/deploys.txt");
 			String message = getResponseBody();
 			clearScreen();
-			while(Serial.available() == 0) {
-				printErrors(1, message, "    Last Deploys    ");
+			if (message.length() > 0) {
+				while(Serial.available() == 0) {
+					printErrors(1, message, "    Last Deploys    ");
+				}
+			} else {
+				displayError();
 			}
 		}
 		if(stringIn == "2") {
 			connect("/commits.txt");
 			String message = getResponseBody();
 			clearScreen();
-			while(Serial.available() == 0) {
-				printErrors(1, message, "      Commits       ");
+			if (message.length() > 0) {
+				while(Serial.available() == 0) {
+					printErrors(1, message, "      Commits       ");
+				}
+			} else {
+				displayError();
 			}
 		}
 		if(stringIn == "3") {
 			connect("/errors");
 			String message = getResponseBody();
 			clearScreen();
-			while(Serial.available() == 0) {
-				printErrors(1, message, "       Errors       ");
+			if (message.length() > 0) {
+				while(Serial.available() == 0) {
+					printErrors(1, message, "       Errors       ");
+				}
+			} else {
+				displayError();
 			}
 		}
 		if(stringIn == "4") {
