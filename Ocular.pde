@@ -203,15 +203,12 @@ void printResponse(int refreshSeconds, String message, char *heading){
 		previous =  (millis()/1000);//Store the current time we entered for comparison on the next cycle
 		char lcdTop[20];//Create a char array to store the text for the line
 		int copySize = 20; // What is the size of our screen , this could probably be moved outside the loop but its more dynamic like this
-		if((message.length()) < 20)
-		{
+		if((message.length()) < 20) {
 			//if the message is bigger than the current buffer use its length instead;
 			copySize = message.length();
 		}
-		//Store the current position temporarily and invert its sign if its negative since we are going in reverse
-		int tempPos = pos;
 		//Build the lcd text by copying the required text out of our template message variable 
-		memcpy(&lcdTop[0],&message[tempPos],copySize);
+		memcpy(&lcdTop[0],&message[pos],copySize);
 		lcd.setCursor(0, 3);//Set our draw position , set second param to 0 to use the top line
 		lcd.print(lcdTop);//Print it from position 0
 		lcd.setCursor(0, 0);
