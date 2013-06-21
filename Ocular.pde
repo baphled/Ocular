@@ -91,11 +91,11 @@ void loop() {
 		delay(1000);
 		if(stringIn == "1") {
 			connect("/deploys.txt");
-			handleResponse( "     Last Deploy    ");
+			handleResponse("     Last Deploy    ");
 		}
 		if(stringIn == "2") {
 			connect("/commits.txt");
-			handleResponse("     Last Commit     ");
+			handleResponse("     Last Commit    ");
 		}
 		if(stringIn == "3") {
 			connect("/errors");
