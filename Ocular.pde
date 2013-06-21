@@ -91,11 +91,11 @@ void loop() {
 		delay(1000);
 		if(stringIn == "1") {
 			connect("/deploys.txt");
-			handleResponse( "    Last Deploys    ");
+			handleResponse( "     Last Deploy    ");
 		}
 		if(stringIn == "2") {
 			connect("/commits.txt");
-			handleResponse("      Commits       ");
+			handleResponse("     Last Commit     ");
 		}
 		if(stringIn == "3") {
 			connect("/errors");
@@ -153,7 +153,7 @@ void connect(String path) {
 		client.println();
 	} 
 	else {
-		lcd.println("Connection error!");
+		lcd.print("Connection error!");
 	}
 	delay(1000);
 }
