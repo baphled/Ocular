@@ -38,8 +38,6 @@ String stringIn = "";// for incoming serial data
 int previous = 0;
 int pos = 0;
 
-String message;
-
 LiquidCrystal lcd(9,8, 6, 5, 3, 2);
 
 void setup() {
@@ -172,8 +170,9 @@ void connect(String path) {
 */
 
 void handleResponse(char* caption) {
+	String message;
 
-	if (client.available()) {
+	while (client.available()) {
 		TextFinder finder(client);
 		finder.findUntil("value", "\n\r");
 		// FIXME This won't work if the response is too bigger.
