@@ -183,6 +183,7 @@ void handleResponse(char* caption) {
 			Serial.println(message);
 		}
 	}
+	client.stop();
 	clearScreen();
 	resetScrollPosition();
 	if (message.length() > 0) {
@@ -192,7 +193,6 @@ void handleResponse(char* caption) {
 	} else {
 		displayError();
 	}
-	client.stop();
 }
 
 void printResponse(int refreshSeconds, String message, char *heading){
