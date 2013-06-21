@@ -180,6 +180,8 @@ void handleResponse(char* caption) {
 	}
 	clearScreen();
 	if (message.length() > 0) {
+		previous = 0;
+		pos = 0;
 		while(Serial.available() == 0) {
 			printResponse(1, message, caption);
 		}
