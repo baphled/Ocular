@@ -111,42 +111,6 @@ void loop() {
 	}
 }
 
-void printErrors(int refreshSeconds, String message, char *heading){
-	//Check if the current second since restart is a mod of refresh seconds , 
-	//if it is then update the display , it must also not equal the previously 
-	//stored value to prevent duplicate refreshes
-	if((millis()/1000) % refreshSeconds == 0 && previous != (millis()/1000)){
-		previous =  (millis()/1000);//Store the current time we entered for comparison on the next cycle
-		lcd.setCursor(0, 3);//Set our draw position , set second param to 0 to use the top line
-		char lcdTop[20];//Create a char array to store the text for the line
-		int copySize = 20; // What is the size of our screen , this could probably be moved outside the loop but its more dynamic like this
-		if((message.length()) < 20)
-		{
-			//if the message is bigger than the current buffer use its length instead;
-			copySize = message.length();
-		}
-		//Store the current position temporarily and invert its sign if its negative since we are going in reverse
-		int tempPos = pos;
-		if(tempPos < 0)
-		{
-			tempPos = -(tempPos);
-		}
-		//Build the lcd text by copying the required text out of our template message variable 
-		memcpy(&lcdTop[0],&message[tempPos],copySize);
-		lcd.print(lcdTop);//Print it from position 0
-		lcd.setCursor(0, 0);
-		lcd.print("       Ocular      ");
-		lcd.setCursor(0, 1);
-		lcd.print(heading);
-		//Increase the current position and check if the position + 16 (screen size) would be larger than the message length , if it is go in reverse by inverting the sign.
-		pos += 1;
-		if(pos +20 >= message.length())
-		{
-			pos = 0;
-		}
-	}
-}
-
 /*
 	 Display the help menu for the application
 
@@ -217,10 +181,46 @@ void handleResponse(char* caption) {
 	clearScreen();
 	if (message.length() > 0) {
 		while(Serial.available() == 0) {
-			printErrors(1, message, caption);
+			printResponse(1, message, caption);
 		}
 	} else {
 		displayError();
 	}
 	client.stop();
+}
+
+void printResponse(int refreshSeconds, String message, char *heading){
+	//Check if the current second since restart is a mod of refresh seconds , 
+	//if it is then update the display , it must also not equal the previously 
+	//stored value to prevent duplicate refreshes
+	if((millis()/1000) % refreshSeconds == 0 && previous != (millis()/1000)){
+		previous =  (millis()/1000);//Store the current time we entered for comparison on the next cycle
+		lcd.setCursor(0, 3);//Set our draw position , set second param to 0 to use the top line
+		char lcdTop[20];//Create a char array to store the text for the line
+		int copySize = 20; // What is the size of our screen , this could probably be moved outside the loop but its more dynamic like this
+		if((message.length()) < 20)
+		{
+			//if the message is bigger than the current buffer use its length instead;
+			copySize = message.length();
+		}
+		//Store the current position temporarily and invert its sign if its negative since we are going in reverse
+		int tempPos = pos;
+		if(tempPos < 0)
+		{
+			tempPos = -(tempPos);
+		}
+		//Build the lcd text by copying the required text out of our template message variable 
+		memcpy(&lcdTop[0],&message[tempPos],copySize);
+		lcd.print(lcdTop);//Print it from position 0
+		lcd.setCursor(0, 0);
+		lcd.print("       Ocular      ");
+		lcd.setCursor(0, 1);
+		lcd.print(heading);
+		//Increase the current position and check if the position + 16 (screen size) would be larger than the message length , if it is go in reverse by inverting the sign.
+		pos += 1;
+		if(pos +20 >= message.length())
+		{
+			pos = 0;
+		}
+	}
 }
