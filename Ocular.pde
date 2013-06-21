@@ -76,6 +76,10 @@ void clearLine(int line) {
 	lcd.print("                    ");
 }
 
+void resetScrollPosition() {
+	previous = 1;
+	pos = 1;
+}
 void displayError() {
 	lcd.setCursor(0, 2);
 	lcd.print(" Error in response ");
@@ -181,9 +185,8 @@ void handleResponse(char* caption) {
 		}
 	}
 	clearScreen();
+	resetScrollPosition();
 	if (message.length() > 0) {
-		previous = 0;
-		pos = 0;
 		while(Serial.available() == 0) {
 			printResponse(1, message, caption);
 		}
