@@ -66,11 +66,13 @@ void setup() {
 }
 
 void clearScreen() {
-	lcd.setCursor(0, 1);
-	lcd.print("                    ");
-	lcd.setCursor(0, 2);
-	lcd.print("                    ");
-	lcd.setCursor(0, 3);
+	for (i = 0; i<=2; i++) {
+		clearLine(i);
+	}
+}
+
+void clearLine(int line) {
+	lcd.setCursor(0, line);
 	lcd.print("                    ");
 }
 
