@@ -61,12 +61,12 @@ void setup() {
 	lcd.setCursor(2, 3);
 	lcd.print("IP: ");
 	lcd.print(Ethernet.localIP());
-	delay(5000);
+	delay(2000);
 	displayHelp();
 }
 
 void clearScreen() {
-	for (i = 0; i<=2; i++) {
+	for (int i = 1; i<=3; i++) {
 		clearLine(i);
 	}
 }
