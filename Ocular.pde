@@ -122,12 +122,13 @@ void loop() {
 			handleResponse("       Errors       ");
 			break;
 		case '4':
-			clearScreen();
-			lcd.setCursor(0, 1);
-			lcd.print("      Settings     ");
-			lcd.setCursor(0, 3);
-			lcd.print("API:");
-			// TODO: Create IP input functionality via a 4x4 keypad
+			connect("/stats.txt");
+			handleResponse("     Statistics     ");
+			break;
+			break;
+		case '5':
+			connect("/repos.txt");
+			handleResponse("    Repositories    ");
 			break;
 		case '0':
 			displayHelp();
@@ -153,8 +154,10 @@ void displayHelp() {
 	lcd.setCursor(0, 2);
 	lcd.print("#3 Errors");
 	lcd.setCursor(10, 2);
-	lcd.print("#4 Config");
+	lcd.print("#4 Stats");
 	lcd.setCursor(0, 3);
+	lcd.print("#5 Repos");
+	lcd.setCursor(10, 3);
 	lcd.print("#0 Help");
 }
 
@@ -171,7 +174,7 @@ void connect(String path) {
 		lcd.setCursor(0, 1);
 		lcd.print("     Connected     ");
 		lcd.setCursor(0, 2);
-		lcd.print(" Gathering data ...");
+		lcd.print(" Gathering data ... ");
 
 		client.println("GET " + path + " HTTP/1.1");
 		client.println();
