@@ -132,12 +132,6 @@ void loop() {
 		case '0':
 			displayHelp();
 			break;
-		case '*':		// FIXME: This should be *
-			Serial.println("Pressed *");
-			break;
-		case '#':		// FIXME: This should be #
-			Serial.println("Pressed #");
-			break;
 		default:
 			Serial.print(stringIn);
 			Serial.println(" is not a valid value");
@@ -204,6 +198,7 @@ void connect(String path) {
 void handleResponse(char* caption) {
 	String message;
 
+	bool continueScroll = true;
 	while (client.available()) {
 		TextFinder finder(client);
 		finder.findUntil("value", "\n\r");
@@ -219,8 +214,23 @@ void handleResponse(char* caption) {
 	clearScreen();
 	resetScrollPosition();
 	if (message.length() > 0) {
-		while(kpd.getKey() == NO_KEY) {
-			printResponse(1, message, caption);
+		while(continueScroll) {
+			stringIn = kpd.getKey();
+			switch(stringIn) {
+			case '#':
+				Serial.println("Restart message");
+				pos = 1;
+				previous = 1;
+				break;
+			case '*':
+				Serial.println("Break loop");
+				// FIXME: Connect to API for latest information
+				// TODO: Should automatically poll
+				continueScroll = false;
+				break;
+			default:
+				printResponse(1, message, caption);
+			}
 		}
 	} else {
 		displayError();
