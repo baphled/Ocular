@@ -15,6 +15,25 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include <TextFinder.h>
+#include <Keypad.h>
+
+const byte ROWS = 4; // Four rows
+const byte COLS = 4; // Three columns
+// Define the Keymap
+char keys[ROWS][COLS] = {
+  {'1','2','3','A'},
+  {'4','5','6','B'},
+  {'7','8','9','C'},
+  {'#','0','*','D'}
+};
+// Connect keypad ROW0, ROW1, ROW2 and ROW3 to these Arduino pins.
+byte rowPins[ROWS] = { 14, 15, 16, 17};
+// Connect keypad COL0, COL1 and COL2 to these Arduino pins.
+byte colPins[COLS] = {4, 18, 7, 19}; 
+
+// Create the Keypad
+Keypad kpd = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
+
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
@@ -33,7 +52,7 @@ EthernetClient client;
 
 // TODO: Fix auto scroll bug
 
-String stringIn = "";// for incoming serial data
+char stringIn;// for incoming serial data
 
 int previous = 0;
 int pos = 0;
@@ -86,30 +105,42 @@ void displayError() {
 }
 
 void loop() {
-	if (Serial.available() > 0) {
-		String stringIn = Serial.readString();
-		delay(1000);
-		if(stringIn == "1") {
+	stringIn = kpd.getKey();
+	if (stringIn != NO_KEY) {
+		Serial.println(stringIn);
+		switch(stringIn) {
+		case '1':
 			connect("/deploys.txt");
 			handleResponse("     Last Deploy    ");
-		}
-		if(stringIn == "2") {
+			break;
+		case '2':
 			connect("/commits.txt");
 			handleResponse("     Last Commit    ");
-		}
-		if(stringIn == "3") {
-			connect("/errors");
+			break;
+		case '3':
+			connect("/errors.txt");
 			handleResponse("       Errors       ");
-		}
-		if(stringIn == "4") {
+			break;
+		case '4':
 			clearScreen();
 			lcd.setCursor(0, 1);
 			lcd.print("      Settings     ");
 			lcd.setCursor(0, 3);
 			lcd.print("API:");
 			// TODO: Create IP input functionality via a 4x4 keypad
-		}
-		if (stringIn == "0") {
+			break;
+		case '0':
+			displayHelp();
+			break;
+		case '*':		// FIXME: This should be *
+			Serial.println("Pressed *");
+			break;
+		case '#':		// FIXME: This should be #
+			Serial.println("Pressed #");
+			break;
+		default:
+			Serial.print(stringIn);
+			Serial.println(" is not a valid value");
 			displayHelp();
 		}
 	}
@@ -142,8 +173,7 @@ void displayHelp() {
 */
 void connect(String path) {
 	clearScreen();
-	client.connect(server, 9000);
-	if (client.connected()) {
+	if (client.connect(server, 9000)) {
 		lcd.setCursor(0, 1);
 		lcd.print("     Connected     ");
 		lcd.setCursor(0, 2);
@@ -153,7 +183,9 @@ void connect(String path) {
 		client.println();
 	} 
 	else {
-		lcd.print("Connection error!");
+		clearScreen();
+		lcd.setCursor(0, 2);
+		lcd.print(" Connection failed!");
 	}
 	delay(1000);
 }
@@ -187,7 +219,7 @@ void handleResponse(char* caption) {
 	clearScreen();
 	resetScrollPosition();
 	if (message.length() > 0) {
-		while(Serial.available() == 0) {
+		while(kpd.getKey() == NO_KEY) {
 			printResponse(1, message, caption);
 		}
 	} else {
