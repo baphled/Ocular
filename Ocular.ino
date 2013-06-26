@@ -165,14 +165,18 @@ void loop() {
 			displayHelp();
 			break;
 		default:
-      clearScreen();
-      lcd.setCursor(0, 1);
-			lcd.print(" Invalid option: ");
-			lcd.print(stringIn);
-			delay(1000);
-			displayHelp();
+			invalidOption();
 		}
 	}
+}
+
+void invalidOption() {
+	clearScreen();
+	lcd.setCursor(0, 1);
+	lcd.print(" Invalid option: ");
+	lcd.print(stringIn);
+	delay(1000);
+	displayHelp();
 }
 
 void pingAPI() {
