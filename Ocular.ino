@@ -287,6 +287,9 @@ void handleResponse(char* caption) {
 				Serial.println("Restart message");
         resetScrollPosition();
         break;
+      case '*':   // FIXME Is actually #
+				continueScroll = false;
+        break;
       case '0':
 				continueScroll = false;
         displayHelp();
