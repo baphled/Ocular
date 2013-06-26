@@ -3,9 +3,25 @@ Ocular
 
 This is the main code for Ocular, my devops monitoring tool, which is built for the Arduino.
 
+Ocular is a LCD based device that allows you to view information
+relating to your application. The idea is to allow me to get a quick
+overview of what is going on with a project without having to open up my
+browser.
+
+At present it only displays the last commit and deployment and is very
+much coupled to the tools I use at home and at work. Ideally this will
+be improved over time.
+
+Please feel free to fork the project with any tweaks you think it may
+require. 
+
+There are two parts to Ocular, the code needed for the device and the [API](http://github.com/baphle/ocular_api).
+
 Warning:
 
-It's still a working progress and therefore likely to change quite alot.
+It's still a working progress and therefore likely to change quite alot
+and is not guaranteed to work brilliantly. I still need to polish up the
+API and get finalise the actual design of the device.
 
 For instruction on creating your own Ocular device checkout the [breadboard diagram](http://raw.github.com/baphled/Ocular/master/breadboard.png).
 
