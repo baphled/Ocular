@@ -21,10 +21,10 @@ const byte ROWS = 4; // Four rows
 const byte COLS = 4; // Three columns
 // Define the Keymap
 char keys[ROWS][COLS] = {
-  {'1','2','3','A'},
-  {'4','5','6','B'},
-  {'7','8','9','C'},
-  {'#','0','*','D'}
+	{'1','2','3','A'},
+	{'4','5','6','B'},
+	{'7','8','9','C'},
+	{'#','0','*','D'}
 };
 // Connect keypad ROW0, ROW1, ROW2 and ROW3 to these Arduino pins.
 byte rowPins[ROWS] = { 14, 15, 16, 17};
@@ -83,10 +83,10 @@ void setup() {
 }
 
 /*
-  Clear the whole screen
+	 Clear the whole screen
 
-  Except for the title
-*/
+	 Except for the title
+ */
 void clearScreen() {
 	for (int i = 1; i<=3; i++) {
 		clearLine(i);
@@ -94,27 +94,27 @@ void clearScreen() {
 }
 
 /*
-  Clear a specific line
-*/
+	 Clear a specific line
+ */
 void clearLine(int line) {
 	lcd.setCursor(0, line);
 	lcd.print("                    ");
 }
 
 /*
-  Reset the scroll position
+	 Reset the scroll position
 
-  This is used to make sure that we are at the the begin of a string when we start to make it scroll
-*/
+	 This is used to make sure that we are at the the begin of a string when we start to make it scroll
+ */
 void resetScrollPosition() {
 	previous = 1;
 	pos = 1;
 }
 
 /*
-  Display the response error message
+	 Display the response error message
 
-*/
+ */
 void displayError() {
 	lcd.setCursor(0, 2);
 	lcd.print(" Error in response ");
@@ -148,12 +148,12 @@ void loop() {
 			connect("/repos.txt");
 			handleResponse("    Repositories    ");
 			break;
-    case '#':
+		case '#':
 			displaySettings();
 			break;
-    case '*':
-      pingAPI();
-    case '0':
+		case '*':
+			pingAPI();
+		case '0':
 			displayHelp();
 			break;
 		default:
@@ -221,7 +221,7 @@ void pingAPI() {
 
  */
 void displayHelp() {
-  // TODO: Refactor so that we can scroll through menu
+	// TODO: Refactor so that we can scroll through menu
 	clearScreen();
 	lcd.setCursor(0, 1);
 	lcd.print("1 Deploys");
@@ -234,16 +234,16 @@ void displayHelp() {
 	lcd.setCursor(0, 3);
 	lcd.print("5 Repos");
 	lcd.setCursor(10, 3);
-	lcd.print("0 Help");
+	lcd.print("6 Graphs");
 }
 
- /*
+/*
 
-	The following methods focus on connecting and retrieving data from our API
+	 The following methods focus on connecting and retrieving data from our API
 
-	TODO: Moved to it's own file
+TODO: Moved to it's own file
 
-*/
+ */
 void connect(String path) {
 	clearScreen();
 	if (client.connect(server, 9000)) {
@@ -265,14 +265,14 @@ void connect(String path) {
 
 /*
 
-	Get the response's body
+	 Get the response's body
 
-	This assumes that the request was successful which is obviously not always the case for various reasons.
+	 This assumes that the request was successful which is obviously not always the case for various reasons.
 
-	We need to improve on this functionality so that we only get the response
-	body when we have made a successful request.
+	 We need to improve on this functionality so that we only get the response
+	 body when we have made a successful request.
 
-*/
+ */
 
 void handleResponse(char* caption) {
 	String message;
@@ -299,16 +299,16 @@ void handleResponse(char* caption) {
 			switch(stringIn) {
 			case '#':   // FIXME Is actually *
 				Serial.println("Restart message");
-        resetScrollPosition();
-        break;
-      case '*':   // FIXME Is actually #
+				resetScrollPosition();
+				break;
+			case '*':   // FIXME Is actually #
 				continueScroll = false;
-        break;
-      case '0':
+				break;
+			case '0':
 				continueScroll = false;
-        displayHelp();
-        break;
-      default:
+				displayHelp();
+				break;
+			default:
 				repositionResponse(1, message, caption);
 			}
 		}
@@ -318,11 +318,11 @@ void handleResponse(char* caption) {
 }
 
 /*
-  Repositions the response
+	 Repositions the response
 
-  This gives the user the illusion of scrolling text when called in a while loop
+	 This gives the user the illusion of scrolling text when called in a while loop
 
-*/
+ */
 void repositionResponse(int refreshSeconds, String message, char *heading){
 	//Check if the current second since restart is a mod of refresh seconds , 
 	//if it is then update the display , it must also not equal the previously 
