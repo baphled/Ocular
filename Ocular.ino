@@ -7,7 +7,7 @@
 
 	 The idea of this is to connect to an API that serves up to date information about a project.
 
-	 This application was designed for the 20x4 16pin LCD
+	 This application was designed for the 20x4 16pin LCD and 16 key keypad
 
  */
 
@@ -82,21 +82,39 @@ void setup() {
 	displayHelp();
 }
 
+/*
+  Clear the whole screen
+
+  Except for the title
+*/
 void clearScreen() {
 	for (int i = 1; i<=3; i++) {
 		clearLine(i);
 	}
 }
 
+/*
+  Clear a specific line
+*/
 void clearLine(int line) {
 	lcd.setCursor(0, line);
 	lcd.print("                    ");
 }
 
+/*
+  Reset the scroll position
+
+  This is used to make sure that we are at the the begin of a string when we start to make it scroll
+*/
 void resetScrollPosition() {
 	previous = 1;
 	pos = 1;
 }
+
+/*
+  Display the response error message
+
+*/
 void displayError() {
 	lcd.setCursor(0, 2);
 	lcd.print(" Error in response ");
@@ -146,6 +164,7 @@ void loop() {
 
  */
 void displayHelp() {
+  // TODO: Refactor so that we can scroll through menu
 	clearScreen();
 	lcd.setCursor(0, 1);
 	lcd.print("#1 Deploys");
@@ -231,9 +250,10 @@ void handleResponse(char* caption) {
 				// FIXME: Connect to API for latest information
 				// TODO: Should automatically poll
 				continueScroll = false;
-				break;
-			default:
-				printResponse(1, message, caption);
+        displayHelp();
+        break;
+      default:
+				repositionResponse(1, message, caption);
 			}
 		}
 	} else {
@@ -241,7 +261,13 @@ void handleResponse(char* caption) {
 	}
 }
 
-void printResponse(int refreshSeconds, String message, char *heading){
+/*
+  Repositions the response
+
+  This gives the user the illusion of scrolling text when called in a while loop
+
+*/
+void repositionResponse(int refreshSeconds, String message, char *heading){
 	//Check if the current second since restart is a mod of refresh seconds , 
 	//if it is then update the display , it must also not equal the previously 
 	//stored value to prevent duplicate refreshes
