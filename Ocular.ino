@@ -175,7 +175,7 @@ void loop() {
 void pingAPI() {
 	clearScreen();
 	lcd.setCursor(0, 2);
-  lcd.print("   Pinging API ...");
+	lcd.print("   Pinging API ...");
 	delay(500);
 	clearLine(2);
 	if (client.connect(server, 9000)) {
@@ -191,6 +191,15 @@ void pingAPI() {
 	}
 	client.stop();
 	delay(1000);
+	bool continueForever = true;
+	while(continueForever) {
+		stringIn = kpd.getKey();
+		switch(stringIn) {
+		case '*':   // FIXME Is actually *
+			continueForever = false;
+			break;
+		}
+	}
 }
 
 /*
