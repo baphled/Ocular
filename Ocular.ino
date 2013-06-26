@@ -165,8 +165,11 @@ void loop() {
 			displayHelp();
 			break;
 		default:
-			Serial.print(stringIn);
-			Serial.println(" is not a valid value");
+      clearScreen();
+      lcd.setCursor(0, 1);
+			lcd.print(" Invalid option: ");
+			lcd.print(stringIn);
+			delay(1000);
 			displayHelp();
 		}
 	}
