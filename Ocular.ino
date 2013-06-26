@@ -175,8 +175,22 @@ void loop() {
 void pingAPI() {
 	clearScreen();
 	lcd.setCursor(0, 2);
-  lcd.print(" Pinging API ...");
-  delay(1000);
+  lcd.print("   Pinging API ...");
+	delay(500);
+	clearLine(2);
+	if (client.connect(server, 9000)) {
+		lcd.setCursor(0, 2);
+		lcd.print("    Successfully    ");
+		lcd.setCursor(0, 3);
+		lcd.print("     Connected      ");
+	} else {
+		lcd.setCursor(0, 2);
+		lcd.print("  Unsuccessfully  ");
+		lcd.setCursor(0, 3);
+		lcd.print("     Connected    ");
+	}
+	client.stop();
+	delay(1000);
 }
 
 /*
