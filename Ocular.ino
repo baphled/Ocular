@@ -40,7 +40,7 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 // Enter a MAC address for your controller below.
 // TODO: Make these configurable
 // TODO: Should be able to choose to use DHCP or manually configure IP settings
-byte server[] = { 192, 168, 0, 23 }; // API IP address
+IPAddress server(192, 168, 0, 23); // API IP address
 
 // Initialize the Ethernet client library
 // with the IP address and port of the server 
@@ -148,7 +148,20 @@ void loop() {
 			connect("/repos.txt");
 			handleResponse("    Repositories    ");
 			break;
-		case '0':
+    case '#':
+      clearScreen();
+      lcd.setCursor(0, 1);
+      lcd.print("      Settings     ");
+      lcd.setCursor(2, 2);
+      lcd.print(" IP: ");
+      lcd.print(Ethernet.localIP());
+      lcd.setCursor(2, 3);
+      lcd.print("API: ");
+      lcd.print(server);
+      break;
+    case '*':
+      pingAPI();
+    case '0':
 			displayHelp();
 			break;
 		default:
@@ -157,6 +170,13 @@ void loop() {
 			displayHelp();
 		}
 	}
+}
+
+void pingAPI() {
+	clearScreen();
+	lcd.setCursor(0, 2);
+  lcd.print(" Pinging API ...");
+  delay(1000);
 }
 
 /*
