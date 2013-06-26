@@ -264,13 +264,6 @@ void handleResponse(char* caption) {
 				Serial.println("Restart message");
         resetScrollPosition();
         break;
-			case '*':   // FIXME Is actually #
-				Serial.println("Break loop");
-				// FIXME: Connect to API for latest information
-				// TODO: Should automatically poll
-        pos = message.length();
-        previous = (message.length() - 1);
-        break;
       case '0':
 				continueScroll = false;
         displayHelp();
