@@ -143,7 +143,6 @@ void loop() {
 			connect("/stats.txt");
 			handleResponse("     Statistics     ");
 			break;
-			break;
 		case '5':
 			connect("/repos.txt");
 			handleResponse("    Repositories    ");
