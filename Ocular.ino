@@ -176,7 +176,7 @@ void displaySettings() {
 
 void invalidOption() {
 	clearScreen();
-	lcd.setCursor(0, 1);
+	lcd.setCursor(0, 2);
 	lcd.print(" Invalid option: ");
 	lcd.print(stringIn);
 	delay(1000);
