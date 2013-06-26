@@ -205,6 +205,9 @@ void pingAPI() {
 		case '*':   // FIXME Is actually *
 			continueForever = false;
 			break;
+		case '0':
+			continueForever = false;
+			break;
 		}
 	}
 }
