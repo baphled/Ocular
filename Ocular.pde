@@ -208,8 +208,9 @@ void handleResponse(char* caption) {
 		// FIXME This won't work if the response is too bigger.
 		message = client.readString();
 		if (!message.length()) {
-			Serial.println("Problem getting full response");
+			Serial.println("Empty reponse!");
 		} else {
+			Serial.println("Reponse found!");
 			Serial.println(message);
 		}
 	}
