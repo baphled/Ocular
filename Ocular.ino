@@ -149,16 +149,8 @@ void loop() {
 			handleResponse("    Repositories    ");
 			break;
     case '#':
-      clearScreen();
-      lcd.setCursor(0, 1);
-      lcd.print("      Settings     ");
-      lcd.setCursor(2, 2);
-      lcd.print(" IP: ");
-      lcd.print(Ethernet.localIP());
-      lcd.setCursor(2, 3);
-      lcd.print("API: ");
-      lcd.print(server);
-      break;
+			displaySettings();
+			break;
     case '*':
       pingAPI();
     case '0':
@@ -168,6 +160,18 @@ void loop() {
 			invalidOption();
 		}
 	}
+}
+
+void displaySettings() {
+	clearScreen();
+	lcd.setCursor(0, 1);
+	lcd.print("      Settings     ");
+	lcd.setCursor(2, 2);
+	lcd.print(" IP: ");
+	lcd.print(Ethernet.localIP());
+	lcd.setCursor(2, 3);
+	lcd.print("API: ");
+	lcd.print(server);
 }
 
 void invalidOption() {
