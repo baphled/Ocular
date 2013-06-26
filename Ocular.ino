@@ -260,11 +260,11 @@ void handleResponse(char* caption) {
 		while(continueScroll) {
 			stringIn = kpd.getKey();
 			switch(stringIn) {
-			case '#':
+			case '#':   // FIXME Is actually *
 				Serial.println("Restart message");
         resetScrollPosition();
         break;
-			case '*':
+			case '*':   // FIXME Is actually #
 				Serial.println("Break loop");
 				// FIXME: Connect to API for latest information
 				// TODO: Should automatically poll
