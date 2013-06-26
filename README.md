@@ -7,4 +7,4 @@ Warning:
 
 It's still a working progress and therefore likely to change quite alot.
 
-![alt text](http://raw.github.com/baphled/Ocular/master/breadboard.png "Ocular breadboard diagram")
+For instruction on creating your own Ocular device checkout the [breadboard diagram](http://raw.github.com/baphled/Ocular/master/breadboard.png).
