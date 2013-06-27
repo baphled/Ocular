@@ -128,29 +128,19 @@ void loop() {
 		Serial.println(stringIn);
 		switch(stringIn) {
 		case '1':
-			if(connect("/deploys.txt")) {
-        handleResponse("     Last Deploy    ");
-      }
+      handleMenuOption("/deploys.txt", "     Last Deploy    ");
 			break;
 		case '2':
-      if(connect("/commits.txt")) {
-        handleResponse("     Last Commit    ");
-			}
+      handleMenuOption("/commits.txt", "     Last Commit    ");
 			break;
 		case '3':
-			if(connect("/errors.txt")) {
-        handleResponse("       Errors       ");
-      }
+      handleMenuOption("/errors.txt", "       Errors       ");
       break;
 		case '4':
-			if(connect("/stats.txt")) {
-        handleResponse("     Statistics     ");
-      }
+      handleMenuOption("/stats.txt", "     Statistics     ");
 			break;
 		case '5':
-      if(connect("/repos.txt")) {
-        handleResponse("    Repositories    ");
-      }
+      handleMenuOption("/repos.txt", "    Repositories    ");
       break;
 		case '#':
 			displaySettings();
@@ -164,6 +154,14 @@ void loop() {
 			invalidOption();
 		}
 	}
+}
+
+void handleMenuOption(char* path, char* title) {
+  if(connect(path)) {
+    handleResponse(title);
+  } else {
+    displayHelp();
+  }
 }
 
 void displaySettings() {
