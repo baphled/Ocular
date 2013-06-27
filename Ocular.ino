@@ -128,25 +128,30 @@ void loop() {
 		Serial.println(stringIn);
 		switch(stringIn) {
 		case '1':
-			connect("/deploys.txt");
-			handleResponse("     Last Deploy    ");
+			if(connect("/deploys.txt")) {
+        handleResponse("     Last Deploy    ");
+      }
 			break;
 		case '2':
-			connect("/commits.txt");
-			handleResponse("     Last Commit    ");
+      if(connect("/commits.txt")) {
+        handleResponse("     Last Commit    ");
+			}
 			break;
 		case '3':
-			connect("/errors.txt");
-			handleResponse("       Errors       ");
-			break;
+			if(connect("/errors.txt")) {
+        handleResponse("       Errors       ");
+      }
+      break;
 		case '4':
-			connect("/stats.txt");
-			handleResponse("     Statistics     ");
+			if(connect("/stats.txt")) {
+        handleResponse("     Statistics     ");
+      }
 			break;
 		case '5':
-			connect("/repos.txt");
-			handleResponse("    Repositories    ");
-			break;
+      if(connect("/repos.txt")) {
+        handleResponse("    Repositories    ");
+      }
+      break;
 		case '#':
 			displaySettings();
 			break;
@@ -243,9 +248,10 @@ void displayHelp() {
 TODO: Moved to it's own file
 
  */
-void connect(String path) {
+bool connect(String path) {
+  bool is_connected = client.connect(server, 9000);
 	clearScreen();
-	if (client.connect(server, 9000)) {
+  if (is_connected) {
 		lcd.setCursor(0, 1);
 		lcd.print("     Connected     ");
 		lcd.setCursor(0, 2);
@@ -257,9 +263,10 @@ void connect(String path) {
 	else {
 		clearScreen();
 		lcd.setCursor(0, 2);
-		lcd.print(" Connection failed!");
+    lcd.print("  API unavailable! ");
 	}
 	delay(1000);
+  return is_connected;
 }
 
 /*
