@@ -24,7 +24,7 @@ char keys[ROWS][COLS] = {
 	{'1','2','3','A'},
 	{'4','5','6','B'},
 	{'7','8','9','C'},
-	{'#','0','*','D'}
+	{'*','0','#','D'}
 };
 // Connect keypad ROW0, ROW1, ROW2 and ROW3 to these Arduino pins.
 byte rowPins[ROWS] = { 14, 15, 16, 17};
@@ -142,10 +142,10 @@ void loop() {
 		case '5':
       handleMenuOption("/repos.txt", "    Repositories    ");
       break;
-		case '#':
+		case '*':
 			displaySettings();
 			break;
-		case '*':
+		case '#':
 			pingAPI();
 		case '0':
 			displayHelp();
@@ -208,7 +208,7 @@ void pingAPI() {
 	while(continueForever) {
 		stringIn = kpd.getKey();
 		switch(stringIn) {
-		case '*':   // FIXME Is actually #
+		case '#':
 			continueForever = false;
 			break;
 		case '0':
@@ -312,7 +312,7 @@ void readResponse(String message, char* caption, bool continueScroll) {
       stringIn = kpd.getKey();
       if(stringIn != NO_KEY) {
         switch(stringIn) {
-        case '#':   // FIXME Is actually *
+        case '*':
           Serial.println("Restart message");
           resetScrollPosition();
           break;
