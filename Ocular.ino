@@ -355,9 +355,9 @@ void repositionResponse(int refreshSeconds, String message, char *heading){
 		lcd.print(heading);
 		//Increase the current position and check if the position + 16 (screen size) would be larger than the message length , if it is go in reverse by inverting the sign.
 		pos += 1;
-		if(pos +20 >= message.length())
+		if(pos +20 > message.length())
 		{
-			pos = 0;
+			pos = 1;
 		}
 	}
 }
