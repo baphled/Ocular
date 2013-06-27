@@ -208,7 +208,7 @@ void pingAPI() {
 	while(continueForever) {
 		stringIn = kpd.getKey();
 		switch(stringIn) {
-		case '*':   // FIXME Is actually *
+		case '*':   // FIXME Is actually #
 			continueForever = false;
 			break;
 		case '0':
