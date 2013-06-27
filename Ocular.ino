@@ -280,10 +280,13 @@ bool connect(String path) {
 
 void handleResponse(char* caption) {
 	String message;
+  bool continueScroll = true;
 
-	bool continueScroll = true;
-	while (client.available()) {
-		TextFinder finder(client);
+  // FIXME: should poll for a reponse and timeout after x
+  delay(1000);
+
+	if (client.available()) {
+    TextFinder finder(client);
 		finder.findUntil("value", "\n\r");
 		// FIXME This won't work if the response is too bigger.
 		message = client.readString();
@@ -293,34 +296,37 @@ void handleResponse(char* caption) {
 			Serial.println("Reponse found!");
 			Serial.println(message);
 		}
-	}
-	client.stop();
-	clearScreen();
-	resetScrollPosition();
-	if (message.length() > 0) {
-		while(continueScroll) {
-			stringIn = kpd.getKey();
-			switch(stringIn) {
-			case '#':   // FIXME Is actually *
-				Serial.println("Restart message");
-				resetScrollPosition();
-				break;
-			case '*':   // FIXME Is actually #
-				continueScroll = false;
-				break;
-			case '0':
-				continueScroll = false;
-				displayHelp();
-				break;
-			default:
-				repositionResponse(1, message, caption);
-			}
-		}
-	} else {
-		displayError();
-	}
+    client.stop();
+    clearScreen();
+    resetScrollPosition();
+    readResponse(message, caption, continueScroll);
+  } else {
+    lcd.setCursor(0,2);
+    lcd.print(" Connection timeout");
+  }
 }
 
+void readResponse(String message, char* caption, bool continueScroll) {
+  if (message.length() > 0) {
+    while(continueScroll) {
+      stringIn = kpd.getKey();
+      if(stringIn != NO_KEY) {
+        switch(stringIn) {
+        case '#':   // FIXME Is actually *
+          Serial.println("Restart message");
+          resetScrollPosition();
+          break;
+        default:
+          continueScroll = false;
+          displayHelp();
+        }
+      }
+      repositionResponse(1, message, caption);
+    }
+  } else {
+    displayError();
+  }
+}
 /*
 	 Repositions the response
 
