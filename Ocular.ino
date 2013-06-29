@@ -226,17 +226,17 @@ void displayHelp() {
 	// TODO: Refactor so that we can scroll through menu
 	clearScreen();
 	lcd.setCursor(0, 1);
-	lcd.print("1 Deploys");
-	lcd.setCursor(10, 1);
-	lcd.print("2 Commits");
+	lcd.print("1 Lst Dply");
+	lcd.setCursor(11, 1);
+	lcd.print("2 Lst Cmt");
 	lcd.setCursor(0, 2);
 	lcd.print("3 Errors");
-	lcd.setCursor(10, 2);
+	lcd.setCursor(11, 2);
 	lcd.print("4 Stats");
 	lcd.setCursor(0, 3);
 	lcd.print("5 Repos");
-	lcd.setCursor(10, 3);
-	lcd.print("6 Graphs");
+	lcd.setCursor(11, 3);
+	lcd.print("6 Deploy");
 }
 
 /*
