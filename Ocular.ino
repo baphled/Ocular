@@ -128,10 +128,10 @@ void loop() {
 		Serial.println(stringIn);
 		switch(stringIn) {
 		case '1':
-      handleMenuOption("/deploys.txt", "     Last Deploy    ");
+      handleMenuOption("/deploy/last.txt", "     Last Deploy    ");
 			break;
 		case '2':
-      handleMenuOption("/commits.txt", "     Last Commit    ");
+      handleMenuOption("/commit/last.txt", "     Last Commit    ");
 			break;
 		case '3':
       handleMenuOption("/errors.txt", "       Errors       ");
